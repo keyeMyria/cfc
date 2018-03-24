@@ -5,8 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default class Times extends Component{
     
     static navigationOptions = {
-        title: 'Organizações',
-        tabBarIcon: ({ tintColor }) => <Icon name='building' size={20} color={tintColor} />
+        title: 'Times',
+      //  tabBarIcon: ({ tintColor }) => <Icon name='building' size={20} color={tintColor} />
       }
 
     render(){

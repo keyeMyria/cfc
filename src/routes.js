@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import { DrawerNavigator, StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 
 import Welcome from './pages/welcome';
-import Parciais from './pages/parciais';
 import Ligas from './pages/ligas';
 import Times from './pages/times';
+import MeuTime from './pages/meutime';
 
 import {metrics, colors} from './styles';
 
@@ -33,7 +33,7 @@ const MyDrawer = DrawerNavigator(
                             tabBarComponent: TabBarBottom,
                             tabBarOptions:{
                                 showIcon:true,
-                                showLabel:false,
+                                showLabel:true,
                                 activeTintColor:colors.white,
                                 inactiveTintColor:colors.whiteTransparent,
                                 style:{
@@ -41,14 +41,17 @@ const MyDrawer = DrawerNavigator(
                                 }
                             }
                         }
-                ) }
+                ) ,navigationOptions:{drawerLabel:'Parciais'}},
+        MeuTime: {screen: MeuTime}
         // fecha parciais ======================================================
     },
      
      // Abre configs do Drawer ======================================================
      {
-         initialRouteName:'Parciais',
+        
+         initialRouteName:'MeuTime',
          drawerPosition:'right',
+
 
          drawerOpenRoute: "DrawerOpen",
          drawerCloseRoute: "DrawerClose",
@@ -57,13 +60,15 @@ const MyDrawer = DrawerNavigator(
         
          contentOptions:{
          activeTintColor:'#000',
-         inactiveTintColor:'#FFF',
-         activeBackgroundColor:'#FAFAFA',
+         inactiveTintColor:'#000',
+        // activeBackgroundColor:'#fff',
+         
          
      
-            // labelStyle:{
-            //     color:'#FFF',
-            // },
+          // labelStyle:{
+              //   color:'#FFF',
+              
+           //  },
         },
      }
  
