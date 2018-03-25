@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 
 import {View, Text, FlatList, ActivityIndicator, AsyncStorage, Image} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import Styles from './styles';
 import { apiCartola } from '../../services';
 import MeuTimeItem from './components';
@@ -9,7 +11,8 @@ export default class Meutime extends Component{
 
     static navigationOptions = ({navigation}) => ({
         drawerLabel: 'Minha Escalação',
-        title: "Minha Escalação"
+        title: "Escalação",
+        header:null
       //  tabBarIcon: ({ tintColor }) => <Icon name='building' size={20} color={tintColor} />
       })
 
@@ -19,6 +22,15 @@ export default class Meutime extends Component{
         final:[],
         partidas:[],
         loading:false,
+        infoTime: 
+                    {
+                        nomeTime:'',
+                        nomeCartola:'',
+                        escudo:null,
+                        patrimonio:'',
+                        valorTime:''
+                    }
+        ,
       }
 
       componentDidMount(){
@@ -59,6 +71,16 @@ export default class Meutime extends Component{
         */
                 
             this.setState({data: response.data, atletasOrder : orderData, loading:false})
+            this.setState({infoTime: {
+                                        nomeTime:this.state.data.time.nome,
+                                        nomeCartola:this.state.data.time.nome_cartola,
+                                        escudo:this.state.data.time.url_escudo_png,
+                                        patrimonio:this.state.data.patrimonio,
+                                        valorTime: this.state.data.valor_time
+                                        }
+                         });
+            
+            console.tron.log(this.state.infoTime)
             
             {   
                 this.state.atletasOrder.map(atletas =>(
@@ -75,7 +97,8 @@ export default class Meutime extends Component{
                                                 ultima: atletas.pontos_num,
                                                 jogos: atletas.jogos_num,                                                
                                                 clube: this.state.data.clubes[atletas.clube_id].nome,
-                                                escudo: this.state.data.clubes[atletas.clube_id].escudos['60x60']                     
+                                                escudo: this.state.data.clubes[atletas.clube_id].escudos['60x60'],
+                                                
                                             }
                                                 , ...this.state.final
                                             ]
@@ -83,6 +106,7 @@ export default class Meutime extends Component{
                 ))
             }
 
+            console.tron.log(this.state.data.time.nome)
             console.tron.log(this.state.data)            
             console.tron.log(this.state.final)
     
@@ -110,12 +134,44 @@ export default class Meutime extends Component{
 
     render(){
         return(
-            <View style={Styles.container}  >
+            <View style={Styles.container}>
+                    {
+                        this.state.infoTime.nomeTime ? // se já tivermos valores no estate de informacoes sobre time, tenderizamos o cabeçalho
+                                
+                        <View style={Styles.cabecalho}>
+                            <View style={Styles.escudoContainer} >
+                                <Image style={{width: 45, height: 45}} source={{uri:this.state.infoTime.escudo }} />
+                            </View>
+                            <View style={Styles.infosHeader} >
+                                <View style={Styles.infosHeader1} >
+                                    <Text style={{fontWeight:'500', color:'#000'}} >{this.state.infoTime.nomeTime}</Text>
+                                    <View style={{flexDirection:'row'}} >
+                                        <Text>Patrimonio: </Text>
+                                        <Text style={{fontWeight:'500', color:'#000'}} >C${this.state.infoTime.patrimonio}</Text>
+                                    </View>
+                                </View>
+                                <View style={Styles.infosHeader2} >
+                                    <Text>Preço do time: </Text>
+                                    <Text style={{fontWeight:'500', color:'#000'}} >C${this.state.infoTime.valorTime}</Text>
+                                </View>
+                            </View>
+                            <View style={{justifyContent:'center', marginRight:10, marginLeft:20}} >
+                                <Icon name='navicon' size={20} color='#000'/>
+                            </View>
+                            
+                        </View>
+                        :
+                        null
+                    }
+            
+            <View style={{flex:10}} >
                 { this.state.loading 
                 ? <ActivityIndicator style={Styles.loading} /> 
                 :  this.renderList() 
                 }
             </View>
+            </View>
         )
     }
 }
+

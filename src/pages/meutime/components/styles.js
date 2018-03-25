@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     container: {
         ...general.box,
         marginHorizontal: metrics.baseMargin,
-        marginTop: metrics.baseMargin /4,
+        marginBottom: metrics.baseMargin /4,
         padding: metrics.basePadding /4,
     }
    ,
