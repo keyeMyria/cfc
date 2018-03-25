@@ -35,7 +35,6 @@ export default class MeuTime extends Component{
                     <View style={Styles.infoContainer} >
                         <View style={Styles.statusContainer} >
                             {_imageStatus()}
-                            <Image style={{width: 20, height: 20}} source={{uri:this.props.MeuTime.escudo}} />
                         </View>
                         <View style={Styles.infoAB} >
                         <View style={Styles.infoA} >
@@ -43,7 +42,32 @@ export default class MeuTime extends Component{
                             <Text style={Styles.txtPosicao} >{ this.props.MeuTime.posicao.toUpperCase()}</Text>
                         </View>
                         <View style={Styles.infoB} >
-                            <Text style={{fontSize:15, marginLeft:5}} >infoB</Text>
+                            <View style={{flex:2}} >
+                            <Image style={{width: 20, height: 20}} source={{uri:this.props.MeuTime.escudo}} />
+                            <Text style={{fontSize:10, marginLeft:5, textAlignVertical:'center'}} >{this.props.MeuTime.clube}</Text>
+                            </View>
+                            <View style={Styles.valoresContainer} >
+                                <View style={Styles.valores} >
+                                    <Text style={{fontWeight:'500', color:'#000'}} >C$ {this.props.MeuTime.preco}</Text>
+                                    <Text style={Styles.txtValores} >PREÇO</Text>
+                                </View>
+                                <View style={Styles.valores} >
+                                    <Text style={this.props.MeuTime.variacao >= 0 ? Styles.valPositivo : Styles.valNegativo} >{this.props.MeuTime.variacao}</Text>
+                                    <Text style={Styles.txtValores} >VAR.(C$)</Text>
+                                </View>
+                                <View style={Styles.valores} >
+                                    <Text style={this.props.MeuTime.variacao >= 0 ? Styles.valPositivo : Styles.valNegativo} >{this.props.MeuTime.media}</Text>
+                                    <Text style={Styles.txtValores} >MÉDIA</Text>
+                                </View>
+                                <View style={Styles.valores} >
+                                    <Text style={this.props.MeuTime.variacao >= 0 ? Styles.valPositivo : Styles.valNegativo} >{this.props.MeuTime.ultima}</Text>
+                                    <Text style={Styles.txtValores} >ÚLTIMA</Text>
+                                </View>
+                                <View style={Styles.valores} >
+                                    <Text style={{fontWeight:'bold', color:'#000'}}>{this.props.MeuTime.jogos}</Text>
+                                    <Text style={Styles.txtValores} >JOGOS</Text>
+                                </View>
+                            </View>
                         </View>
                         </View>
                     </View>

@@ -33,40 +33,39 @@ export default class Welcome extends Component {
 // ====================================================================================
       checkUserExists = async (username, password) => {
         
-        //const user = await apiAuth.post('/',{
-        const user = await axios.post('https://login.globo.com/api/authentication',{
-            payload:{
-                email:username,
-                password: password,
-                serviceId: 438
-                },
-                captcha:'' 
-        })
-        .then(res => this.setState({ loading:false, token:res.data.glbId}) )
-        .catch(err => this.setState({ loading: false, errorMessage:'Erro ao se conectar. Verifique seus dados e tente novamente', token:'' }))
-        ;
-
-        return user;
-    
-      }
+      try{
+            const user = await axios.post('https://login.globo.com/api/authentication',{
+              payload:{
+                  email:username,
+                  password: password,
+                  serviceId: 438
+                  },
+                  captcha:'' 
+          });
+        
+          this.setState({  token:user.data.glbId})
+          return user;
+      }catch(err){
+          return user
+      }  
+    }
 // ====================================================================================
       signIn = async () => {
 
+    try{
+
         const {username, password} = this.state;
-    
+        
         // se nao foi digitado um usuario, saimos da funcao
         if(username.length === 0 || password.length === 0) return;
     
         this.setState({ loading:true, errorMessage:null });
-        
     
-        try{
-        
         await this.checkUserExists(username, password);
 
         const {token} = this.state;
         
-         await this.saveToken(token);
+        await this.saveToken(token);
     
           // deu certo.. direciona para a pagina
           const resetAction = NavigationActions.reset({
@@ -80,10 +79,10 @@ export default class Welcome extends Component {
     
         }catch(err){
          // erro
-         this.setState({ loading: false, errorMessage:'Usuário não existe'+err })
+         this.setState({ loading: false, errorMessage:'Usuário ou senha inválidos' })
+
         }
-    
-        
+            
       }
 
     render(){
@@ -117,10 +116,9 @@ export default class Welcome extends Component {
                   { this.state.loading 
                   ? <ActivityIndicator size='small' color="#FFF" />
                   :
-                  <Text style={styles.buttonText} >Prosseguir</Text>
+                  <Text style={styles.buttonText} >Entrar</Text>
                   }
-                  
-                  
+                                    
                 </TouchableOpacity>
             </View>
         )

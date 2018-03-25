@@ -17,7 +17,8 @@ export default class Meutime extends Component{
         data:[],
         atletasOrder:[],
         final:[],
-        loading:true,
+        partidas:[],
+        loading:false,
       }
 
       componentDidMount(){
@@ -25,14 +26,38 @@ export default class Meutime extends Component{
       }
     
       loadMeuTime = async () => {
-        const token = await AsyncStorage.getItem("@ESCartolaFC:token");
-        const response = await apiCartola.get(`/auth/time`, {headers: {'X-GLB-Token' : token}} )
+        
+    try{
 
-          // ordernar minhas lista
+        this.setState({loading:true})
+
+        const token = await AsyncStorage.getItem("@ESCartolaFC:token");
+        const response = await apiCartola.get(`/auth/time`, {headers: {'X-GLB-Token' : token}} ) // meu time
+
+        // ordernar minhas lista
            const orderData = response.data.atletas.sort((a,b) => {
                 return b.posicao_id - a.posicao_id
             })
 
+      /*  const partidas = await apiCartola.get(`/partidas`); // proximas partidas
+           
+        { // realizar um map no obj para pegar apenas os ids de clube da casa e clue visitante
+            partidas.data.partidas.map(part => (
+                this.setState({
+                            partidas: [
+                                {
+                                    timeCasa: part.clube_casa_id,
+                                    timeVisitante: part.clube_visitante_id
+                                },
+                                ...this.state.partidas
+                            ]
+                })
+            ))
+        }
+
+        console.tron.log(this.state.partidas)
+        */
+                
             this.setState({data: response.data, atletasOrder : orderData, loading:false})
             
             {   
@@ -44,8 +69,13 @@ export default class Meutime extends Component{
                                                 posicao: this.state.data.posicoes[atletas.posicao_id].abreviacao,
                                                 foto: atletas.foto,
                                                 status: atletas.status_id,
+                                                preco: atletas.preco_num,
+                                                media: atletas.media_num,
+                                                variacao: atletas.variacao_num,
+                                                ultima: atletas.pontos_num,
+                                                jogos: atletas.jogos_num,                                                
                                                 clube: this.state.data.clubes[atletas.clube_id].nome,
-                                                escudo: this.state.data.clubes[atletas.clube_id].escudos['60x60']                       
+                                                escudo: this.state.data.clubes[atletas.clube_id].escudos['60x60']                     
                                             }
                                                 , ...this.state.final
                                             ]
@@ -55,8 +85,12 @@ export default class Meutime extends Component{
 
             console.tron.log(this.state.data)            
             console.tron.log(this.state.final)
-            console.tron.log(this.state.data.posicoes[1].nome)
-      }
+    
+    }catch(err){
+      return// return alert(err)
+    }
+        
+}
     
      renderListItem = ({ item }) => (
         // <Text>meu time</Text>
@@ -68,7 +102,6 @@ export default class Meutime extends Component{
           data={this.state.final}
           keyExtractor={item => String(item.atletaId)}
           renderItem={this.renderListItem}
-
          // numColumns={2}
         // columnWrapperStyle={styles.columnContainer}
         />

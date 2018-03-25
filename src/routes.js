@@ -50,7 +50,7 @@ import Contas from './pages/contas';
                  drawerOpenRoute: "DrawerOpen",
                  drawerCloseRoute: "DrawerClose",
                  drawerToggleRoute: "DrawerToggle",
-                
+                                 
                  contentOptions:{
                  activeTintColor:'#000',
                  inactiveTintColor:'#000',
