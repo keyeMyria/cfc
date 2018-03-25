@@ -7,21 +7,68 @@ import Times from './pages/times';
 import MeuTime from './pages/meutime';
 
 import {metrics, colors} from './styles';
+import Contas from './pages/contas';
 
  const createNavigator = (isLogged = false) => 
     StackNavigator(
     {
         Welcome: {screen: Welcome},
-        User: {screen: MyDrawer }
-        
-    },{
+        User: {screen: DrawerNavigator(
+            {
+                Parciais: {screen: TabNavigator(
+                                {
+                                    Ligas: {screen: Ligas},
+                                    Times: {screen: Times}
+                                },
+                                {
+                                    tabBarPosition: 'bottom',
+                                    tabBarComponent: TabBarBottom,
+                                    tabBarOptions:{
+                                        showIcon:true,
+                                        showLabel:true,
+                                        activeTintColor:colors.white,
+                                        inactiveTintColor:colors.whiteTransparent,
+                                        style:{
+                                            backgroundColor:colors.secundary,
+                                        }
+                                    }
+                                }
+                          ), 
+                          navigationOptions:{drawerLabel:'Parciais'}
+                          },
+                MeuTime:  {screen: MeuTime},
+                Contas: {screen: Contas},
+                         //   navigationOptions:{drawerLabel:'Minhas Contas'}
+                         
+                
+             // fecha parciais ======================================================
+            },
+             // Abre configs do Drawer ======================================================
+             {
+                 initialRouteName:'MeuTime',
+                 drawerPosition:'right',
+                 drawerOpenRoute: "DrawerOpen",
+                 drawerCloseRoute: "DrawerClose",
+                 drawerToggleRoute: "DrawerToggle",
+                
+                 contentOptions:{
+                 activeTintColor:'#000',
+                 inactiveTintColor:'#000',
+                // activeBackgroundColor:'#fff',
+                // labelStyle:{color:'#FFF' },
+                },
+             }
+        ) }
+    }
+    // opções do primeiro StackNavigator
+    ,{
         initialRouteName : isLogged ? 'User' : 'Welcome', 
-        headerMode:'none'
+       // headerMode:'screen'
     }
 );
 
 
-const MyDrawer = DrawerNavigator(
+/*const MyDrawer = DrawerNavigator(
     {
         Parciais: {screen: TabNavigator(
                         {
@@ -41,37 +88,35 @@ const MyDrawer = DrawerNavigator(
                                 }
                             }
                         }
-                ) ,navigationOptions:{drawerLabel:'Parciais'}},
-        MeuTime: {screen: MeuTime}
+                  ), 
+                  navigationOptions:{drawerLabel:'Parciais'}
+                  },
+        VMeuTime: {
+                    screen: StackNavigator(
+                        {
+                            MeuTime: {screen: MeuTime}
+                        }
+                    ),
+                    navigationOptions:{drawerLabel:'Visualizar Meu Time'}
+                 }
         // fecha parciais ======================================================
     },
-     
      // Abre configs do Drawer ======================================================
      {
-        
-         initialRouteName:'MeuTime',
+         initialRouteName:'VMeuTime',
          drawerPosition:'right',
-
-
          drawerOpenRoute: "DrawerOpen",
          drawerCloseRoute: "DrawerClose",
          drawerToggleRoute: "DrawerToggle",
-
         
          contentOptions:{
          activeTintColor:'#000',
          inactiveTintColor:'#000',
         // activeBackgroundColor:'#fff',
-         
-         
-     
-          // labelStyle:{
-              //   color:'#FFF',
-              
-           //  },
+        // labelStyle:{color:'#FFF' },
         },
      }
- 
 )
+*/
 
 export default createNavigator;

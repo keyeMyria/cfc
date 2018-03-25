@@ -8,6 +8,7 @@ export default class Ligas extends Component{
 
     static navigationOptions = {
         title: 'Ligas',
+        
       //  tabBarIcon: ({ tintColor }) => <Icon name='building' size={20} color={tintColor} />
       }
 
@@ -22,7 +23,6 @@ export default class Ligas extends Component{
           })
 
           this.props.navigation.dispatch(resetAction);
-
     }
 
     render(){

@@ -4,6 +4,7 @@ import { metrics, general, colors } from '../../styles';
 const styles = StyleSheet.create({
     container:{
         flex:1,
+        backgroundColor: colors.light
     },
     loading:{
         marginTop: metrics.basePadding
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderBottomColor:colors.darkTransparent
     }
+    
 });
 
 export default styles;

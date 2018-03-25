@@ -5,7 +5,7 @@ import { Dimensions } from 'react-native';
  export default {
    basePadding: 20,
    baseMargin: 10,
-   baseRadius: 3,
+   baseRadius: 6,
    screenWidth: width < height ? width : height,
    screenHeight: width < height ? height : width,
  };
