@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, AsyncStorage} from 'react-native';
 import { connect } from 'react-redux';
+import axios from 'axios';
 // ===================================================================
 import Styles from './styles';
 import {
@@ -17,18 +18,75 @@ import {modificaTime} from '../../../../redux/actions/controleTimeAction';
 
 class MeuTime extends Component{
 
-componentWillMount(){
+    state = {
+        dadosEscalacao:null,
+    }
+
+
+ componentDidMount(){
 // atualizar state do redux que contem meu time montado
-this.props.modificaTime(
+ this.props.modificaTime(
                         this.props.MeuTime.apelido,
                         this.props.MeuTime.atletaId,
+                        this.props.MeuTime.esquemaId,
+                        this.props.MeuTime.capitao,
                         );
 
-//console.tron.log('modificaTime')
-console.tron.log(this.props.timeMontado)
-
+console.tron.log('modificaTime'+this.props.MeuTime.apelido)
+//console.tron.log(this.props.atletas)
 }
 
+_montarDados = () => {
+
+    console.tron.log('mostrar o reducer')
+    console.tron.log(this.props.atletas)
+
+    let dadosInsert = {
+        "esquema": this.props.esquemaId,
+        "capitao": this.props.capitao,
+        "atletas":this.props.atletas
+}
+
+    let convertidos = JSON.stringify(dadosInsert);
+
+    this.setState({dadosEscalacao: convertidos})
+}
+// ==========================================================================================
+    _enviarTime = async () => {
+        
+       await this._montarDados();
+
+        const escalacao = this.state.dadosEscalacao;
+        
+        console.tron.log(escalacao)
+
+        const token = await AsyncStorage.getItem("@ESCartolaFC:token");
+
+        let axiosConfig = {
+            headers: {
+                'X-GLB-Token': token
+            }
+          };
+
+        try{
+
+            const response = await axios.post('https://api.cartolafc.globo.com/auth/time/salvar',
+                  
+                  JSON.stringify(escalacao)
+                 ,
+                 { 
+                     headers:{'X-GLB-Token': token}                 
+                 }
+                );
+            alert('Time Escalado')
+            return response;
+        }catch(err){
+            alert(err)
+         //   return response
+        }  
+      }
+
+// ==========================================================================================
 
     render(){
        
@@ -63,7 +121,10 @@ console.tron.log(this.props.timeMontado)
                             <Text style={Styles.txtNomeJogador} >{this.props.MeuTime.apelido}</Text>
                             <View style={{flexDirection:'row'}} >
                                 <Text style={Styles.txtPosicao} >{this.props.MeuTime.posicao.toUpperCase()}</Text>
-                             <TouchableOpacity onPress={() => alert(this.props.MeuTime.atletaId)}  >
+                             <TouchableOpacity 
+                                    //onPress={() => alert(this.props.MeuTime.atletaId)}
+                                    onPress ={()=> this._enviarTime() }
+                            >
                               { // se o id do jogador for igual ao id do capitao, mostramos a bracadeira
                                   this.props.MeuTime.atletaId == this.props.MeuTime.capitao ? 
                                   <Image style={{width: 20, height: 20}} source={{uri:URI_CAPITAO_SIM}} />
@@ -109,7 +170,9 @@ console.tron.log(this.props.timeMontado)
 
 const mapStateToProps = state => (
     {
-        timeMontado: state.controleTimeReducer.timeMontado,
+        atletas: state.controleTimeReducer.atletas,
+        capitao:state.controleTimeReducer.capitao,
+        esquemaId: state.controleTimeReducer.esquemaId
     }
 )
 

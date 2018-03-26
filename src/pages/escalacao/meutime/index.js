@@ -69,12 +69,11 @@ componentDidMount(){
                                         }
                          });
             
-         //   console.tron.log(this.state.infoTime)
-            
             {   
                 this.state.atletasOrder.map(atletas =>(
                     
-                   this.setState({ final: [ {   atletaId: atletas.atleta_id,
+                   this.setState({ final: [ {   esquemaId: this.state.data.time.esquema_id,
+                                                atletaId: atletas.atleta_id,
                                                 apelido:atletas.apelido, 
                                                 posicaoId:atletas.posicao_id, 
                                                 posicao: this.state.data.posicoes[atletas.posicao_id].nome,
@@ -88,8 +87,7 @@ componentDidMount(){
                                                 clube: this.state.data.clubes[atletas.clube_id].nome,
                                                 escudo: this.state.data.clubes[atletas.clube_id].escudos['60x60'],
                                                 capitao: this.state.data.capitao_id
-                                                
-                                            }
+                                           }
                                                 , ...this.state.final
                                             ]
                     })    
@@ -98,7 +96,7 @@ componentDidMount(){
             }
 
          //   console.tron.log(this.state.data.time.nome)
-         //   console.tron.log(this.state.data)            
+            console.tron.log(this.state.data)            
             console.tron.log(this.state.final)
     
     }catch(err){

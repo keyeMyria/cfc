@@ -1,12 +1,10 @@
 import {MODIFICA_TIME} from '../actions/types';
 
 const INITIAL_STATE = {
-    
-  timeMontado:[
-               /* {
-                  apelido:null,
-                }*/
-              ],
+  
+  esquemaId:null,
+  capitao:null,
+  atletas:[],
   
   };
   
@@ -14,13 +12,11 @@ const INITIAL_STATE = {
   export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
       case MODIFICA_TIME:
-        return { ...state, timeMontado: [
-                                        {
-                                          apelido:action.apelido,
-                                          atletaId:action.atletaId,
-                                        },
-                                        ...state.timeMontado
-                                        ]  };
+        return { ...state,
+                  esquemaId:action.esquemaId,
+                  capitao:action.capitao, 
+                  atletas: [...state.atletas, action.atletaId]
+                };
       
       default:
         return state;
