@@ -27,7 +27,6 @@ export default class MeuTime extends Component{
                 return <Image style={{ width: 20, height: 20}} source={{uri:URI_STATUS_PROVAVEL}} />
             }   
        } 
-
         return(
             <View style={Styles.container} >
                 <View style={Styles.jogadores} >
