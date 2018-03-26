@@ -90,6 +90,3 @@ export default class MeuTime extends Component{
         )
     }
 }
-
-
-// <Text style={{fontSize:12, marginLeft:5, textAlignVertical:'center'}} > - {this.props.MeuTime.clube}</Text>   

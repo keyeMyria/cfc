@@ -8,7 +8,6 @@ import {View,
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Styles from './styles';
-import StylesC from './stylesC'; // style do componente
 import { apiCartola } from '../../../services';
 import MeuTimeItem from './components';
 
