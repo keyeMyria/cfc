@@ -4,7 +4,7 @@ import { DrawerNavigator, StackNavigator, TabNavigator, TabBarBottom } from 'rea
 import Welcome from './pages/welcome';
 import Ligas from './pages/ligas';
 import Times from './pages/times';
-import MeuTime from './pages/meutime';
+import MeuTime from './pages/escalacao/meutime';
 
 import {metrics, colors} from './styles';
 import Contas from './pages/contas';
@@ -36,8 +36,28 @@ import Contas from './pages/contas';
                           ), 
                           navigationOptions:{drawerLabel:'Parciais'}
                           },
-                MeuTime:  {screen: MeuTime},
-                Contas: {screen: Contas},
+                MeuTime:  { screen: TabNavigator(
+                                    {
+                                        MeuTime: {screen: MeuTime},
+                                    },
+                                    {
+                                        tabBarPosition: 'bottom',
+                                        tabBarComponent: TabBarBottom,
+                                        tabBarOptions:{
+                                            showIcon:true,
+                                            showLabel:true,
+                                            activeTintColor:colors.white,
+                                            inactiveTintColor:colors.whiteTransparent,
+                                            style:{
+                                                backgroundColor:colors.secundary,
+                                            }
+                                        }
+                                    }
+                                ),
+                                navigationOptions:{drawerLabel:'Escalação'}
+                          },
+
+                Contas: {screen: Contas}, // um stack dentro do drawer
                          //   navigationOptions:{drawerLabel:'Minhas Contas'}
                          
                 

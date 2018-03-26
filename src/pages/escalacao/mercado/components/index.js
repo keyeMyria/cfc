@@ -8,7 +8,8 @@ import {
         URI_STATUS_CONTUNDIDO, 
         URI_STATUS_DUVIDA, 
         URI_STATUS_SUSPENSO,
-        URI_CAPITAO
+        URI_CAPITAO_SIM,
+        URI_CAPITAO_NAO
         } from '../../../config/urls';
 
 export default class MeuTime extends Component{
@@ -47,9 +48,9 @@ export default class MeuTime extends Component{
                                 <Text style={Styles.txtPosicao} >{this.props.MeuTime.posicao.toUpperCase()}</Text>
                                { // se o id do jogador for igual ao id do capitao, mostramos a bracadeira
                                   this.props.MeuTime.atletaId == this.props.MeuTime.capitao ? 
-                                  <Image style={{width: 20, height: 20}} source={{uri:URI_CAPITAO}} />
+                                  <Image style={{width: 20, height: 20}} source={{uri:URI_CAPITAO_SIM}} />
                                   :
-                                  null
+                                  <Image style={{width: 20, height: 20}} source={{uri:URI_CAPITAO_NAO}} />
                                } 
                             </View>
                         </View>

@@ -1,11 +1,18 @@
 import React, {Component} from 'react';
-
-import {View, Text, FlatList, ActivityIndicator, AsyncStorage, Image} from 'react-native';
+import {View, 
+        Text, 
+        FlatList, 
+        ActivityIndicator, 
+        AsyncStorage, 
+        Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Styles from './styles';
-import { apiCartola } from '../../services';
+import StylesC from './stylesC'; // style do componente
+import { apiCartola } from '../../../services';
 import MeuTimeItem from './components';
+
+
 
 export default class Meutime extends Component{
 
@@ -33,11 +40,14 @@ export default class Meutime extends Component{
         ,
       }
 
-      componentDidMount(){
-        this.loadMeuTime();
-      }
-    
-      loadMeuTime = async () => {
+// na montagem da pagina, buscaremos as informacoes da API do meu time montado
+componentDidMount(){
+    this.loadMeuTime();
+}
+
+
+// buscando informacoes do meu time ==========================================
+    loadMeuTime = async () => {
         
     try{
 
@@ -50,26 +60,7 @@ export default class Meutime extends Component{
            const orderData = response.data.atletas.sort((a,b) => {
                 return b.posicao_id - a.posicao_id
             })
-
-      /*  const partidas = await apiCartola.get(`/partidas`); // proximas partidas
-           
-        { // realizar um map no obj para pegar apenas os ids de clube da casa e clue visitante
-            partidas.data.partidas.map(part => (
-                this.setState({
-                            partidas: [
-                                {
-                                    timeCasa: part.clube_casa_id,
-                                    timeVisitante: part.clube_visitante_id
-                                },
-                                ...this.state.partidas
-                            ]
-                })
-            ))
-        }
-
-        console.tron.log(this.state.partidas)
-        */
-                
+              
             this.setState({data: response.data, atletasOrder : orderData, loading:false})
             this.setState({infoTime: {
                                         nomeTime:this.state.data.time.nome,
@@ -80,7 +71,7 @@ export default class Meutime extends Component{
                                         }
                          });
             
-            console.tron.log(this.state.infoTime)
+         //   console.tron.log(this.state.infoTime)
             
             {   
                 this.state.atletasOrder.map(atletas =>(
@@ -107,18 +98,18 @@ export default class Meutime extends Component{
                 ))
             }
 
-            console.tron.log(this.state.data.time.nome)
-            console.tron.log(this.state.data)            
+         //   console.tron.log(this.state.data.time.nome)
+         //   console.tron.log(this.state.data)            
             console.tron.log(this.state.final)
     
     }catch(err){
-      return// return alert(err)
+      return
     }
         
 }
-    
-     renderListItem = ({ item }) => (
-        // <Text>meu time</Text>
+
+// renderizando meu componente que mostra o time =============================================
+renderListItem = ({ item }) => (
         <MeuTimeItem MeuTime = {item} />
     )
     
@@ -127,12 +118,10 @@ export default class Meutime extends Component{
           data={this.state.final}
           keyExtractor={item => String(item.atletaId)}
           renderItem={this.renderListItem}
-         // numColumns={2}
-        // columnWrapperStyle={styles.columnContainer}
         />
       );
 
-
+// ============================================================================================
     render(){
         return(
             <View style={Styles.container}>
@@ -178,4 +167,3 @@ export default class Meutime extends Component{
         )
     }
 }
-

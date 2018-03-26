@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         marginLeft:10,
-       // padding:5,
       //  borderWidth:1
     },
     infoB:{
