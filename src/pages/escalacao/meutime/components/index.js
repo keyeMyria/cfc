@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-
+import { connect } from 'react-redux';
+// ===================================================================
 import Styles from './styles';
 import {
         URI_STATUS_PROVAVEL, 
@@ -13,7 +13,22 @@ import {
         URI_REMOVER
         } from '../../../../config/urls';
 
-export default class MeuTime extends Component{
+import {modificaTime} from '../../../../redux/actions/controleTimeAction';
+
+class MeuTime extends Component{
+
+componentWillMount(){
+// atualizar state do redux que contem meu time montado
+this.props.modificaTime(
+                        this.props.MeuTime.apelido,
+                        this.props.MeuTime.atletaId,
+                        );
+
+//console.tron.log('modificaTime')
+console.tron.log(this.props.timeMontado)
+
+}
+
 
     render(){
        
@@ -90,3 +105,14 @@ export default class MeuTime extends Component{
         )
     }
 }
+
+
+const mapStateToProps = state => (
+    {
+        timeMontado: state.controleTimeReducer.timeMontado,
+    }
+)
+
+export default connect(mapStateToProps,{
+    modificaTime,
+})(MeuTime)

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
-
+import { View, Text, AsyncStorage } from 'react-native';
+import { Provider } from 'react-redux'; // continua aqui
+import { createStore, applyMiddleware } from 'redux'; // createStore sai desse arquivo
+import ReduxThunk from 'redux-thunk';
+// ===================================================================================
+import reducers from './redux/reducers';
 import createNavigator from './routes';
 import './config/reactotronConfig';
-
-import { View, Text } from 'react-native';
 
 export default class App extends Component{
   
@@ -32,10 +34,12 @@ export default class App extends Component{
     if(!this.state.userChecked)
     {return null};
     
-   const Routes = createNavigator(this.state.userLogged);
+    const Routes = createNavigator(this.state.userLogged);
     
     return (
-      <Routes />
+      <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
+        <Routes />
+      </Provider>
     )
   }
 }

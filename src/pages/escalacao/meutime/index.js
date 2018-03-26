@@ -6,11 +6,10 @@ import {View,
         AsyncStorage, 
         Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+// =======================================================================
 import Styles from './styles';
 import { apiCartola } from '../../../services';
 import MeuTimeItem from './components';
-
 
 
 export default class Meutime extends Component{
@@ -74,8 +73,8 @@ componentDidMount(){
             
             {   
                 this.state.atletasOrder.map(atletas =>(
-                 
-                    this.setState({ final: [ {  atletaId: atletas.atleta_id,
+                    
+                   this.setState({ final: [ {   atletaId: atletas.atleta_id,
                                                 apelido:atletas.apelido, 
                                                 posicaoId:atletas.posicao_id, 
                                                 posicao: this.state.data.posicoes[atletas.posicao_id].nome,
@@ -94,6 +93,7 @@ componentDidMount(){
                                                 , ...this.state.final
                                             ]
                     })    
+                
                 ))
             }
 
@@ -104,8 +104,10 @@ componentDidMount(){
     }catch(err){
       return
     }
-        
 }
+
+// Atualizar state do redux que contem meu time montado ======================================
+
 
 // renderizando meu componente que mostra o time =============================================
 renderListItem = ({ item }) => (

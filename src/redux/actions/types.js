@@ -1,0 +1,1 @@
+export const MODIFICA_TIME = 'modifica_time';
