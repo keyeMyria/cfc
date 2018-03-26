@@ -56,6 +56,7 @@ import Contas from './pages/contas';
                  inactiveTintColor:'#000',
                 // activeBackgroundColor:'#fff',
                 // labelStyle:{color:'#FFF' },
+                
                 },
              }
         ) }
@@ -63,7 +64,7 @@ import Contas from './pages/contas';
     // opções do primeiro StackNavigator
     ,{
         initialRouteName : isLogged ? 'User' : 'Welcome', 
-       // headerMode:'screen'
+        headerMode:'none'
     }
 );
 

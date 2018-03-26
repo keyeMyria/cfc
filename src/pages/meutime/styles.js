@@ -7,7 +7,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.light
     },
     loading:{
-        marginTop: metrics.basePadding
+      //  marginTop: metrics.basePadding
+      //  justifyContent:'center',
+        
     },
     columnContainer:{
         marginHorizontal: metrics.basePadding,
@@ -19,12 +21,13 @@ const styles = StyleSheet.create({
         borderBottomColor:colors.darkTransparent
     },
     cabecalho: {
-        ...general.box,
+       // ...general.box,
         flex:1,
         flexDirection:'row',
         marginBottom: metrics.baseMargin,
-        margin: metrics.baseMargin / 4,
+       // margin: metrics.baseMargin / 4,
         padding: metrics.basePadding /4,
+        backgroundColor: colors.primary
     },
     escudoContainer:{
         flex:1,
@@ -35,19 +38,25 @@ const styles = StyleSheet.create({
     infosHeader:{
         flex:6,
         flexDirection:'column',
-      //  borderWidth:1
+     //   borderWidth:1
     },
     infosHeader1:{
         flex:1,
-        flexDirection:'row',
-        justifyContent:'space-between',
-       // borderWidth:1
+        justifyContent:'center',
+        alignItems:'center'
+      //  borderWidth:1
     },
     infosHeader2:{
         flex:1,
         flexDirection:'row',
-        justifyContent:'flex-end',
-       // borderWidth:1
+        justifyContent:'center',
+     //   borderWidth:1
+    },
+    infosHeader3:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'center',
+      //  borderWidth:1
     }
     
 });

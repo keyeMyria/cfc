@@ -140,23 +140,23 @@ export default class Meutime extends Component{
                                 
                         <View style={Styles.cabecalho}>
                             <View style={Styles.escudoContainer} >
-                                <Image style={{width: 45, height: 45}} source={{uri:this.state.infoTime.escudo }} />
+                                <Image style={{width: 50, height: 50}} source={{uri:this.state.infoTime.escudo }} />
                             </View>
                             <View style={Styles.infosHeader} >
                                 <View style={Styles.infosHeader1} >
-                                    <Text style={{fontWeight:'500', color:'#000'}} >{this.state.infoTime.nomeTime}</Text>
-                                    <View style={{flexDirection:'row'}} >
-                                        <Text>Patrimonio: </Text>
-                                        <Text style={{fontWeight:'500', color:'#000'}} >C${this.state.infoTime.patrimonio}</Text>
-                                    </View>
+                                    <Text style={{fontWeight:'500', color:'#000', fontSize:15}} >{this.state.infoTime.nomeTime}</Text>
                                 </View>
                                 <View style={Styles.infosHeader2} >
+                                    <Text>Patrimonio: </Text>
+                                    <Text style={{fontWeight:'500', color:'#000', fontSize:12}} >C${this.state.infoTime.patrimonio.toFixed(2)}</Text>
+                                </View>
+                                <View style={Styles.infosHeader3}>
                                     <Text>Preço do time: </Text>
-                                    <Text style={{fontWeight:'500', color:'#000'}} >C${this.state.infoTime.valorTime}</Text>
+                                    <Text style={{fontWeight:'500', color:'#000', fontSize:12}} >C${this.state.infoTime.valorTime.toFixed(2)}</Text>
                                 </View>
                             </View>
                             <View style={{justifyContent:'center', marginRight:10, marginLeft:20}} >
-                                <Icon name='navicon' size={20} color='#000'/>
+                                <Icon name='navicon' size={20} color='#000' onPress={() => {this.props.navigation.navigate('DrawerOpen'); }} />
                             </View>
                             
                         </View>
@@ -164,9 +164,12 @@ export default class Meutime extends Component{
                         null
                     }
             
-            <View style={{flex:10}} >
+            <View style={{flex:10, justifyContent:'center'}} >
                 { this.state.loading 
-                ? <ActivityIndicator style={Styles.loading} /> 
+                ? <View>
+                    <ActivityIndicator style={Styles.loading} size='large' />
+                  </View>
+                    
                 :  this.renderList() 
                 }
             </View>

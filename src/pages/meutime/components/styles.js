@@ -59,34 +59,36 @@ const styles = StyleSheet.create({
         marginLeft:7,
     },
     partidaContainer:{
-        borderWidth:0.6,
-        borderColor: colors.light
+      //  borderWidth:0.6,
+      //  borderColor: colors.light
     },
     valores:{
         flex:1,
         flexDirection:'column',
-        alignItems:'center',
+        alignItems:'flex-end',
         justifyContent:'flex-end',
        // borderWidth:1
     },
     txtValores:{
-        fontSize:8,
+        fontSize:9,
         fontWeight:'bold',
         
     },
     valoresContainer:{
-        flex:5,
+        flex:10,
         flexDirection:'row',
         borderWidth:1,
         borderColor: colors.light
     },
     valNegativo: {
         color: 'red',
-        fontWeight:'bold'
+        fontWeight:'bold',
+        fontSize:12
     },
     valPositivo:{
         color:'green',
-        fontWeight:'bold'
+        fontWeight:'bold',
+        fontSize:12
     }
 });
 

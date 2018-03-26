@@ -35,35 +35,35 @@ export default class MeuTime extends Component{
                     <View style={Styles.infoContainer} >
                         <View style={Styles.statusContainer} >
                             {_imageStatus()}
+                            <View style={{flex:1, justifyContent:'center'}} >
+                                <Image style={{width: 20, height: 20}} source={{uri:this.props.MeuTime.escudo}} />
+                            </View>
                         </View>
                         <View style={Styles.infoAB} >
                         <View style={Styles.infoA} >
                             <Text style={Styles.txtNomeJogador} >{this.props.MeuTime.apelido}</Text>
                             <Text style={Styles.txtPosicao} >{ this.props.MeuTime.posicao.toUpperCase()}</Text>
+                            <Text style={{fontSize:10, marginLeft:5, textAlignVertical:'center'}} > - {this.props.MeuTime.clube}</Text>                            
                         </View>
                         <View style={Styles.infoB} >
-                            <View style={{flex:2}} >
-                            <Image style={{width: 20, height: 20}} source={{uri:this.props.MeuTime.escudo}} />
-                            <Text style={{fontSize:10, marginLeft:5, textAlignVertical:'center'}} >{this.props.MeuTime.clube}</Text>
-                            </View>
                             <View style={Styles.valoresContainer} >
                                 <View style={Styles.valores} >
-                                    <Text style={{fontWeight:'500', color:'#000'}} >C$ {this.props.MeuTime.preco}</Text>
+                                    <Text style={{fontWeight:'500', color:'#000', fontSize:12}} >C$ {this.props.MeuTime.preco.toFixed(2)}</Text>
                                     <Text style={Styles.txtValores} >PREÇO</Text>
                                 </View>
                                 <View style={Styles.valores} >
-                                    <Text style={this.props.MeuTime.variacao >= 0 ? Styles.valPositivo : Styles.valNegativo} >{this.props.MeuTime.variacao}</Text>
+                                    <Text style={this.props.MeuTime.variacao >= 0 ? Styles.valPositivo : Styles.valNegativo} >{this.props.MeuTime.variacao.toFixed(2)}</Text>
                                     <Text style={Styles.txtValores} >VAR.(C$)</Text>
                                 </View>
                                 <View style={Styles.valores} >
-                                    <Text style={this.props.MeuTime.variacao >= 0 ? Styles.valPositivo : Styles.valNegativo} >{this.props.MeuTime.media}</Text>
+                                    <Text style={this.props.MeuTime.variacao >= 0 ? Styles.valPositivo : Styles.valNegativo} >{this.props.MeuTime.media.toFixed(2)}</Text>
                                     <Text style={Styles.txtValores} >MÉDIA</Text>
                                 </View>
                                 <View style={Styles.valores} >
-                                    <Text style={this.props.MeuTime.variacao >= 0 ? Styles.valPositivo : Styles.valNegativo} >{this.props.MeuTime.ultima}</Text>
+                                    <Text style={this.props.MeuTime.variacao >= 0 ? Styles.valPositivo : Styles.valNegativo} >{this.props.MeuTime.ultima.toFixed(2)}</Text>
                                     <Text style={Styles.txtValores} >ÚLTIMA</Text>
                                 </View>
-                                <View style={Styles.valores} >
+                                <View style={{flex:1, flexDirection:'column', alignItems:'center', justifyContent:'center'}} >
                                     <Text style={{fontWeight:'bold', color:'#000'}}>{this.props.MeuTime.jogos}</Text>
                                     <Text style={Styles.txtValores} >JOGOS</Text>
                                 </View>
