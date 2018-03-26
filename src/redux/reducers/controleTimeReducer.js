@@ -1,15 +1,17 @@
-import {MODIFICA_TIME} from '../actions/types';
+import {MODIFICA_TIME, TROCA_CAPITAO} from '../actions/types';
 
 const INITIAL_STATE = {
   
   esquemaId:null,
   capitao:null,
   atletas:[],
+  timeSalvo:true
   
   };
   
   // ====================================
   export default (state = INITIAL_STATE, action) => {
+   
     switch (action.type) {
       case MODIFICA_TIME:
         return { ...state,
@@ -17,6 +19,12 @@ const INITIAL_STATE = {
                   capitao:action.capitao, 
                   atletas: [...state.atletas, action.atletaId]
                 };
+        
+      case TROCA_CAPITAO:
+      return { ...state,
+                capitao:action.capitao,
+                timeSalvo:false
+              };
       
       default:
         return state;

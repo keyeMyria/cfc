@@ -4,15 +4,18 @@ import {View,
         FlatList, 
         ActivityIndicator, 
         AsyncStorage, 
-        Image} from 'react-native';
+        Image,
+        TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
+
 // =======================================================================
 import Styles from './styles';
 import { apiCartola } from '../../../services';
 import MeuTimeItem from './components';
 
 
-export default class Meutime extends Component{
+class Meutime extends Component{
 
     static navigationOptions = ({navigation}) => ({
         drawerLabel: 'Minha Escalação',
@@ -39,13 +42,13 @@ export default class Meutime extends Component{
       }
 
 // na montagem da pagina, buscaremos as informacoes da API do meu time montado
-componentDidMount(){
+componentWillMount(){
     this.loadMeuTime();
 }
 
 
 // buscando informacoes do meu time ==========================================
-    loadMeuTime = async () => {
+loadMeuTime = async () => {
         
     try{
 
@@ -58,8 +61,15 @@ componentDidMount(){
            const orderData = response.data.atletas.sort((a,b) => {
                 return b.posicao_id - a.posicao_id
             })
+
+            console.tron.log('orderData')
+            console.tron.log(orderData)
               
             this.setState({data: response.data, atletasOrder : orderData, loading:false})
+            
+            console.tron.log('atletasOrder')
+            console.tron.log(this.state.atletasOrder)
+
             this.setState({infoTime: {
                                         nomeTime:this.state.data.time.nome,
                                         nomeCartola:this.state.data.time.nome_cartola,
@@ -69,8 +79,8 @@ componentDidMount(){
                                         }
                          });
             
-            {   
-                this.state.atletasOrder.map(atletas =>(
+              
+                this.state.atletasOrder.map( (atletas, i = 0) => (
                     
                    this.setState({ final: [ {   esquemaId: this.state.data.time.esquema_id,
                                                 atletaId: atletas.atleta_id,
@@ -86,14 +96,15 @@ componentDidMount(){
                                                 jogos: atletas.jogos_num,                                                
                                                 clube: this.state.data.clubes[atletas.clube_id].nome,
                                                 escudo: this.state.data.clubes[atletas.clube_id].escudos['60x60'],
-                                                capitao: this.state.data.capitao_id
+                                                capitao: this.state.data.capitao_id,
+                                                numAuxiliar: i
                                            }
                                                 , ...this.state.final
                                             ]
                     })    
                 
                 ))
-            }
+            
 
          //   console.tron.log(this.state.data.time.nome)
             console.tron.log(this.state.data)            
@@ -104,20 +115,19 @@ componentDidMount(){
     }
 }
 
-// Atualizar state do redux que contem meu time montado ======================================
-
-
 // renderizando meu componente que mostra o time =============================================
 renderListItem = ({ item }) => (
         <MeuTimeItem MeuTime = {item} />
     )
     
-      renderList = () => (
+renderList = () => (
+
         <FlatList
           data={this.state.final}
           keyExtractor={item => String(item.atletaId)}
           renderItem={this.renderListItem}
         />
+
       );
 
 // ============================================================================================
@@ -147,22 +157,42 @@ renderListItem = ({ item }) => (
                             <View style={{justifyContent:'center', marginRight:10, marginLeft:20}} >
                                 <Icon name='navicon' size={20} color='#FFF' onPress={() => {this.props.navigation.navigate('DrawerOpen'); }} />
                             </View>
-                            
+                        
                         </View>
                         :
                         null
                     }
-            
+           {    this.state.infoTime.nomeTime && !this.props.timeSalvo ?
+                <TouchableOpacity>
+                <View style={Styles.btnSalvar} >
+                    <Text style={{color:'#FFF'}} >SALVAR TIME</Text>
+                </View>
+                </TouchableOpacity>
+                :
+                null
+           }  
+
             <View style={{flex:10, justifyContent:'center'}} >
                 { this.state.loading 
                 ? <View>
                     <ActivityIndicator style={Styles.loading} size='large' />
                   </View>
                     
-                :  this.renderList() 
+                :  this.renderList()
                 }
             </View>
             </View>
         )
     }
 }
+
+
+const mapStateToProps = state => (
+    {
+        
+        timeSalvo: state.controleTimeReducer.timeSalvo,
+        
+    }
+)
+
+export default connect(mapStateToProps,{})(Meutime)

@@ -14,7 +14,7 @@ import {
         URI_REMOVER
         } from '../../../../config/urls';
 
-import {modificaTime} from '../../../../redux/actions/controleTimeAction';
+import {modificaTime, trocaCapitao} from '../../../../redux/actions/controleTimeAction';
 
 class MeuTime extends Component{
 
@@ -23,29 +23,30 @@ class MeuTime extends Component{
     }
 
 
- componentDidMount(){
+ componentWillMount(){
+
 // atualizar state do redux que contem meu time montado
+
+if(this.props.MeuTime.numAuxiliar <= 11)
  this.props.modificaTime(
                         this.props.MeuTime.apelido,
                         this.props.MeuTime.atletaId,
                         this.props.MeuTime.esquemaId,
                         this.props.MeuTime.capitao,
                         );
+console.tron.log('troca capitao '+ this.props.capitao)
 
-console.tron.log('modificaTime'+this.props.MeuTime.apelido)
-//console.tron.log(this.props.atletas)
 }
 
 _montarDados = () => {
 
-    console.tron.log('mostrar o reducer')
-    console.tron.log(this.props.atletas)
+    var newAtletas = [...new Set(this.props.atletas)]; // retira duplicados do array
 
     let dadosInsert = {
         "esquema": this.props.esquemaId,
         "capitao": this.props.capitao,
-        "atletas":this.props.atletas
-}
+        "atletas":newAtletas
+    }
 
     let convertidos = JSON.stringify(dadosInsert);
 
@@ -57,22 +58,15 @@ _montarDados = () => {
        await this._montarDados();
 
         const escalacao = this.state.dadosEscalacao;
-        
-        console.tron.log(escalacao)
 
+       // colocar este trecho em uma action  passando os dados da escalacao por parametro ==== 
         const token = await AsyncStorage.getItem("@ESCartolaFC:token");
-
-        let axiosConfig = {
-            headers: {
-                'X-GLB-Token': token
-            }
-          };
 
         try{
 
             const response = await axios.post('https://api.cartolafc.globo.com/auth/time/salvar',
                   
-                  JSON.stringify(escalacao)
+                escalacao//  JSON.stringify(escalacao)
                  ,
                  { 
                      headers:{'X-GLB-Token': token}                 
@@ -89,7 +83,7 @@ _montarDados = () => {
 // ==========================================================================================
 
     render(){
-       
+
        _imageStatus = () => {
             switch(this.props.MeuTime.status){
                 case 2:
@@ -104,6 +98,7 @@ _montarDados = () => {
        }
         
         return(
+            
             <View style={Styles.container} >
                 <View style={Styles.jogadores} >
                     <View style={Styles.containerFoto} >
@@ -122,9 +117,9 @@ _montarDados = () => {
                             <View style={{flexDirection:'row'}} >
                                 <Text style={Styles.txtPosicao} >{this.props.MeuTime.posicao.toUpperCase()}</Text>
                              <TouchableOpacity 
-                                    //onPress={() => alert(this.props.MeuTime.atletaId)}
-                                    onPress ={()=> this._enviarTime() }
-                            >
+                                    onPress={() => this.props.trocaCapitao(this.props.MeuTime.atletaId)}
+                                    //onPress ={()=> this._enviarTime() } // chamar botao de salvar e no botao nos vamos enviar os dados
+                             >
                               { // se o id do jogador for igual ao id do capitao, mostramos a bracadeira
                                   this.props.MeuTime.atletaId == this.props.MeuTime.capitao ? 
                                   <Image style={{width: 20, height: 20}} source={{uri:URI_CAPITAO_SIM}} />
@@ -172,10 +167,12 @@ const mapStateToProps = state => (
     {
         atletas: state.controleTimeReducer.atletas,
         capitao:state.controleTimeReducer.capitao,
-        esquemaId: state.controleTimeReducer.esquemaId
+        esquemaId: state.controleTimeReducer.esquemaId,
+        timeSalvo: state.controleTimeReducer.timeSalvo,
+        
     }
 )
 
 export default connect(mapStateToProps,{
-    modificaTime,
+    modificaTime, trocaCapitao
 })(MeuTime)

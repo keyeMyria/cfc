@@ -60,7 +60,16 @@ const styles = StyleSheet.create({
         alignItems:'center'
       //  borderWidth:1
     }
-    
+    ,btnSalvar:{
+        flex:1, 
+        borderWidth:1, 
+        margin:10, 
+        marginTop:0, 
+        borderRadius:10, 
+        backgroundColor:'green',
+        justifyContent:'center',
+        alignItems:'center'
+    }
 });
 
 export default styles;
