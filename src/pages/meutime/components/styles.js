@@ -40,7 +40,9 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection:'row',
         alignItems:'center',
+        justifyContent:'space-between',
         marginLeft:10,
+       // padding:5,
       //  borderWidth:1
     },
     infoB:{
@@ -56,7 +58,8 @@ const styles = StyleSheet.create({
     },
     txtPosicao:{
         fontSize:10,
-        marginLeft:7,
+        marginRight:5,
+        textAlignVertical:'center'
     },
     partidaContainer:{
       //  borderWidth:0.6,

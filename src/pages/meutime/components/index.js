@@ -7,7 +7,9 @@ import {
         URI_STATUS_PROVAVEL, 
         URI_STATUS_CONTUNDIDO, 
         URI_STATUS_DUVIDA, 
-        URI_STATUS_SUSPENSO} from '../../../config/urls';
+        URI_STATUS_SUSPENSO,
+        URI_CAPITAO
+        } from '../../../config/urls';
 
 export default class MeuTime extends Component{
 
@@ -42,13 +44,20 @@ export default class MeuTime extends Component{
                         <View style={Styles.infoAB} >
                         <View style={Styles.infoA} >
                             <Text style={Styles.txtNomeJogador} >{this.props.MeuTime.apelido}</Text>
-                            <Text style={Styles.txtPosicao} >{ this.props.MeuTime.posicao.toUpperCase()}</Text>
-                            <Text style={{fontSize:10, marginLeft:5, textAlignVertical:'center'}} > - {this.props.MeuTime.clube}</Text>                            
+                            <View style={{flexDirection:'row'}} >
+                                <Text style={Styles.txtPosicao} >{this.props.MeuTime.posicao.toUpperCase()}</Text>
+                               { // se o id do jogador for igual ao id do capitao, mostramos a bracadeira
+                                  this.props.MeuTime.atletaId == this.props.MeuTime.capitao ? 
+                                  <Image style={{width: 20, height: 20}} source={{uri:URI_CAPITAO}} />
+                                  :
+                                  null
+                               } 
+                            </View>
                         </View>
                         <View style={Styles.infoB} >
                             <View style={Styles.valoresContainer} >
                                 <View style={Styles.valores} >
-                                    <Text style={{fontWeight:'500', color:'#000', fontSize:12}} >C$ {this.props.MeuTime.preco.toFixed(2)}</Text>
+                                    <Text style={{fontWeight:'500', color:'#000', fontSize:12}} >{this.props.MeuTime.preco.toFixed(2)}</Text>
                                     <Text style={Styles.txtValores} >PREÇO</Text>
                                 </View>
                                 <View style={Styles.valores} >
@@ -76,3 +85,6 @@ export default class MeuTime extends Component{
         )
     }
 }
+
+
+// <Text style={{fontSize:12, marginLeft:5, textAlignVertical:'center'}} > - {this.props.MeuTime.clube}</Text>   
