@@ -1,11 +1,13 @@
-import {MODIFICA_TIME, TROCA_CAPITAO} from '../actions/types';
+import {MODIFICA_TIME, TROCA_CAPITAO, SALVA_ESCALACAO_JSON} from '../actions/types';
 
 const INITIAL_STATE = {
   
   esquemaId:null,
   capitao:null,
   atletas:[],
-  timeSalvo:true
+  escalacaoJson:null,
+  timeSalvo:true,
+
   
   };
   
@@ -25,6 +27,16 @@ const INITIAL_STATE = {
                 capitao:action.capitao,
                 timeSalvo:false
               };
+      case SALVA_ESCALACAO_JSON:
+      return{
+        ...state,
+        escalacaoJson:action.dados,
+      }
+      
+      case 'testeBotao':
+      return{
+        ...state, timeSalvo:true
+      }
       
       default:
         return state;

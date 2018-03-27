@@ -8,21 +8,25 @@ import {View,
         TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import {NavigationActions} from 'react-navigation';
 
 // =======================================================================
 import Styles from './styles';
+
 import { apiCartola } from '../../../services';
 import MeuTimeItem from './components';
-
+import {enviarEscalacao, testeBotao} from '../../../redux/actions/controleTimeAction'
+import { colors } from '../../../styles';
 
 class Meutime extends Component{
 
     static navigationOptions = ({navigation}) => ({
         drawerLabel: 'Minha Escalação',
         title: "Escalação",
-        header:null
+       // header:null
       //  tabBarIcon: ({ tintColor }) => <Icon name='building' size={20} color={tintColor} />
       })
+      
 
     state = {
         data:[],
@@ -39,13 +43,12 @@ class Meutime extends Component{
                         valorTime:''
                     }
         ,
-      }
+    }
 
 // na montagem da pagina, buscaremos as informacoes da API do meu time montado
 componentWillMount(){
     this.loadMeuTime();
 }
-
 
 // buscando informacoes do meu time ==========================================
 loadMeuTime = async () => {
@@ -57,19 +60,14 @@ loadMeuTime = async () => {
         const token = await AsyncStorage.getItem("@ESCartolaFC:token");
         const response = await apiCartola.get(`/auth/time`, {headers: {'X-GLB-Token' : token}} ) // meu time
 
-        // ordernar minhas lista
+        // ordernar minha lista pela posicao dos jogadores==================================================
            const orderData = response.data.atletas.sort((a,b) => {
                 return b.posicao_id - a.posicao_id
             })
-
-            console.tron.log('orderData')
-            console.tron.log(orderData)
-              
+        // no data fica o response original, atletasOrder ficam os atletas ordenados =======================
             this.setState({data: response.data, atletasOrder : orderData, loading:false})
-            
-            console.tron.log('atletasOrder')
-            console.tron.log(this.state.atletasOrder)
-
+        
+        // alguns valores que serao mostrados no header ====================================================
             this.setState({infoTime: {
                                         nomeTime:this.state.data.time.nome,
                                         nomeCartola:this.state.data.time.nome_cartola,
@@ -79,8 +77,8 @@ loadMeuTime = async () => {
                                         }
                          });
             
-              
-                this.state.atletasOrder.map( (atletas, i = 0) => (
+            // "varrer" os atletas ordenados para montar a lista na lista ==================================
+                this.state.atletasOrder.map( atletas => (
                     
                    this.setState({ final: [ {   esquemaId: this.state.data.time.esquema_id,
                                                 atletaId: atletas.atleta_id,
@@ -97,19 +95,12 @@ loadMeuTime = async () => {
                                                 clube: this.state.data.clubes[atletas.clube_id].nome,
                                                 escudo: this.state.data.clubes[atletas.clube_id].escudos['60x60'],
                                                 capitao: this.state.data.capitao_id,
-                                                numAuxiliar: i
                                            }
                                                 , ...this.state.final
-                                            ]
+                                           ]
                     })    
-                
                 ))
             
-
-         //   console.tron.log(this.state.data.time.nome)
-            console.tron.log(this.state.data)            
-            console.tron.log(this.state.final)
-    
     }catch(err){
       return
     }
@@ -117,8 +108,8 @@ loadMeuTime = async () => {
 
 // renderizando meu componente que mostra o time =============================================
 renderListItem = ({ item }) => (
-        <MeuTimeItem MeuTime = {item} />
-    )
+        <MeuTimeItem MeuTime = {item}/>
+);
     
 renderList = () => (
 
@@ -127,11 +118,10 @@ renderList = () => (
           keyExtractor={item => String(item.atletaId)}
           renderItem={this.renderListItem}
         />
-
-      );
-
+);
 // ============================================================================================
-    render(){
+  
+render(){
         return(
             <View style={Styles.container}>
                     {
@@ -162,12 +152,19 @@ renderList = () => (
                         :
                         null
                     }
-           {    this.state.infoTime.nomeTime && !this.props.timeSalvo ?
-                <TouchableOpacity>
+                    
+           {    this.state.infoTime.nomeTime && !this.props.timeSalvo ? // renderizar botao de salvar time
+               
                 <View style={Styles.btnSalvar} >
-                    <Text style={{color:'#FFF'}} >SALVAR TIME</Text>
-                </View>
-                </TouchableOpacity>
+                 <TouchableOpacity 
+                            style={{flex:1,flexDirection:'row', }} 
+                            onPress={() => null}
+                >    
+                    <View style={{flex:1, justifyContent:'center', alignItems:'center'}} >
+                        <Text style={{color:'#FFF'}} >SALVAR TIME</Text>
+                    </View> 
+                 </TouchableOpacity>
+                 </View>
                 :
                 null
            }  
@@ -180,19 +177,17 @@ renderList = () => (
                     
                 :  this.renderList()
                 }
+                
             </View>
             </View>
         )
     }
 }
 
-
 const mapStateToProps = state => (
     {
-        
-        timeSalvo: state.controleTimeReducer.timeSalvo,
-        
+        timeSalvo: state.controleTimeReducer.timeSalvo,   
     }
 )
 
-export default connect(mapStateToProps,{})(Meutime)
+export default connect(mapStateToProps,{enviarEscalacao, testeBotao})(Meutime)

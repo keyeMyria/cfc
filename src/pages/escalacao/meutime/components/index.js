@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {View, Text, Image, TouchableOpacity, AsyncStorage} from 'react-native';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import {NavigationActions} from 'react-navigation';
+
 // ===================================================================
 import Styles from './styles';
 import {
@@ -14,31 +16,34 @@ import {
         URI_REMOVER
         } from '../../../../config/urls';
 
-import {modificaTime, trocaCapitao} from '../../../../redux/actions/controleTimeAction';
+import {modificaTime, trocaCapitao, salvaEscalacaoJson} from '../../../../redux/actions/controleTimeAction';
 
 class MeuTime extends Component{
 
-    state = {
+   state = {
         dadosEscalacao:null,
     }
 
+async componentDidMount(){
 
- componentWillMount(){
-
-// atualizar state do redux que contem meu time montado
-
-if(this.props.MeuTime.numAuxiliar <= 11)
- this.props.modificaTime(
+// atualizar state do redux que contem meu time montado ====================================
+this.props.modificaTime( // dados recebidos da pagina inicial como props
                         this.props.MeuTime.apelido,
                         this.props.MeuTime.atletaId,
                         this.props.MeuTime.esquemaId,
                         this.props.MeuTime.capitao,
                         );
-console.tron.log('troca capitao '+ this.props.capitao)
+console.tron.log(this.props.salvarTime);
 
+//if(this.props.salvarTime == 'sim')
+//this._montarDados();
 }
 
-_montarDados = () => {
+_montarDados = async () => {
+
+    console.tron.log('entrei no montar dados')
+
+   // await AsyncStorage.setItem('@ESCartolaFC:salvarTime','nao')
 
     var newAtletas = [...new Set(this.props.atletas)]; // retira duplicados do array
 
@@ -50,15 +55,18 @@ _montarDados = () => {
 
     let convertidos = JSON.stringify(dadosInsert);
 
-    this.setState({dadosEscalacao: convertidos})
+
+
+    this.props.salvaEscalacaoJson(convertidos); // action que salva o json formatado
 }
 // ==========================================================================================
     _enviarTime = async () => {
         
-       await this._montarDados();
+    //   await this._montarDados();
 
-        const escalacao = this.state.dadosEscalacao;
-
+//        const escalacao = this.state.dadosEscalacao;
+       const escalacao = this.props.escalacaoJson;
+       
        // colocar este trecho em uma action  passando os dados da escalacao por parametro ==== 
         const token = await AsyncStorage.getItem("@ESCartolaFC:token");
 
@@ -121,7 +129,13 @@ _montarDados = () => {
                                     //onPress ={()=> this._enviarTime() } // chamar botao de salvar e no botao nos vamos enviar os dados
                              >
                               { // se o id do jogador for igual ao id do capitao, mostramos a bracadeira
-                                  this.props.MeuTime.atletaId == this.props.MeuTime.capitao ? 
+                               (  
+                                 ( 
+                                     this.props.MeuTime.atletaId == this.props.MeuTime.capitao &&
+                                     this.props.MeuTime.atletaId == this.props.capitao)
+                                  ||
+                                 ( this.props.MeuTime.atletaId == this.props.capitao )
+                               )    ? 
                                   <Image style={{width: 20, height: 20}} source={{uri:URI_CAPITAO_SIM}} />
                                   :
                                   <Image style={{width: 20, height: 20}} source={{uri:URI_CAPITAO_NAO}} />
@@ -162,17 +176,17 @@ _montarDados = () => {
     }
 }
 
-
 const mapStateToProps = state => (
     {
         atletas: state.controleTimeReducer.atletas,
         capitao:state.controleTimeReducer.capitao,
         esquemaId: state.controleTimeReducer.esquemaId,
         timeSalvo: state.controleTimeReducer.timeSalvo,
+        escalacaoJson: state.controleTimeReducer.escalacaoJson
         
     }
 )
 
 export default connect(mapStateToProps,{
-    modificaTime, trocaCapitao
+    modificaTime, trocaCapitao, salvaEscalacaoJson
 })(MeuTime)

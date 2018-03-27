@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { DrawerNavigator, StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
-
+import {View, Text} from 'react-native';
 import Welcome from './pages/welcome';
 import Ligas from './pages/ligas';
 import Times from './pages/times';
@@ -84,7 +84,15 @@ import Contas from './pages/contas';
     // opções do primeiro StackNavigator
     ,{
         initialRouteName : isLogged ? 'User' : 'Welcome', 
-        headerMode:'none'
+        headerMode:'none',
+      navigationOptions: {
+          headerStyle:{
+              backgroundColor: colors.primary,
+              elevation:0,
+               
+          }
+      }
+      
     }
 );
 
