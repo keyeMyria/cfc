@@ -25,6 +25,37 @@ export default class Welcome extends Component {
         errorMessage:null,
         token: ''
       }
+
+// TESTE PARA SALVAR UM JSON NO ASYNCSTORAGE AS INFORMACOES DA API
+_saveApiAsyncStorage = async (token) => {
+
+  try{
+    const response = await apiCartola.get(`/auth/time`, {headers: {'X-GLB-Token' : token}} ) // meu time
+
+    console.tron.log(response.data);
+    console.tron.log('vou salvar no storage');
+    const apiFormat = await JSON.stringify(response);
+    await AsyncStorage.setItem('@ESCartolaFC:jsonApiData',apiFormat);
+    const jsonApiData = await AsyncStorage.getItem("@ESCartolaFC:jsonApiData");
+    console.tron.log(jsonApiData);
+
+    console.tron.log('vamos pegar do storage e formatar para JSON');
+    const jsonApiDataPARSE = await JSON.parse(jsonApiData);
+    console.tron.log(jsonApiDataPARSE)
+  //  console.tron.log(jsonApiDataPARSE.data)
+  //  console.tron.log(jsonApiDataPARSE.data.time)
+
+    this.setState({ loading:false });
+
+
+  }catch(err){
+    console.tron.log('erro no _saveApiAsyncStorage : '+err)
+    this.setState({ loading:false });
+
+  }
+  
+
+}
 // ====================================================================================     
       saveToken = async (token) => {
         await AsyncStorage.setItem('@ESCartolaFC:token',token)
@@ -66,9 +97,21 @@ export default class Welcome extends Component {
         const {token} = this.state;
         
         await this.saveToken(token);
-    
+
+
+        // MEU TESTE PARA SALVAR O RESULTADO DA API NO ASYNCSTORAGE =============
+        await this._saveApiAsyncStorage(token);
+        // ======================================================================
+
           // deu certo.. direciona para a pagina
-          const resetAction = NavigationActions.reset({
+          /* 
+           aqui podemos mudar para que o app busque as informações necessarias nas APIs e salve no redux ou storage
+           e só depois disso enviamos o usuario para dentro da aplicacao. Assim, as telas serao renderizadas
+           com informações locais e quando houver a necessidade de atualizar, manualmente o usuario solicita
+           a nova buscar na API
+          */
+       
+         const resetAction = NavigationActions.reset({
             index:0,
             actions:[
               NavigationActions.navigate({ routeName: 'User' })
@@ -76,7 +119,7 @@ export default class Welcome extends Component {
           })
       
           this.props.navigation.dispatch(resetAction);
-    
+        
         }catch(err){
          // erro
          this.setState({ loading: false, errorMessage:'Usuário ou senha inválidos' })

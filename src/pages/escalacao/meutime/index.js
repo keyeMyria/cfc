@@ -59,47 +59,47 @@ loadMeuTime = async () => {
 
         const token = await AsyncStorage.getItem("@ESCartolaFC:token");
         const response = await apiCartola.get(`/auth/time`, {headers: {'X-GLB-Token' : token}} ) // meu time
-
-        // ordernar minha lista pela posicao dos jogadores==================================================
-           const orderData = response.data.atletas.sort((a,b) => {
-                return b.posicao_id - a.posicao_id
-            })
-        // no data fica o response original, atletasOrder ficam os atletas ordenados =======================
-            this.setState({data: response.data, atletasOrder : orderData, loading:false})
         
-        // alguns valores que serao mostrados no header ====================================================
-            this.setState({infoTime: {
-                                        nomeTime:this.state.data.time.nome,
-                                        nomeCartola:this.state.data.time.nome_cartola,
-                                        escudo:this.state.data.time.url_escudo_png,
-                                        patrimonio:this.state.data.patrimonio,
-                                        valorTime: this.state.data.valor_time
-                                        }
-                         });
-            
-            // "varrer" os atletas ordenados para montar a lista na lista ==================================
-                this.state.atletasOrder.map( atletas => (
-                    
-                   this.setState({ final: [ {   esquemaId: this.state.data.time.esquema_id,
-                                                atletaId: atletas.atleta_id,
-                                                apelido:atletas.apelido, 
-                                                posicaoId:atletas.posicao_id, 
-                                                posicao: this.state.data.posicoes[atletas.posicao_id].nome,
-                                                foto: atletas.foto,
-                                                status: atletas.status_id,
-                                                preco: atletas.preco_num,
-                                                media: atletas.media_num,
-                                                variacao: atletas.variacao_num,
-                                                ultima: atletas.pontos_num,
-                                                jogos: atletas.jogos_num,                                                
-                                                clube: this.state.data.clubes[atletas.clube_id].nome,
-                                                escudo: this.state.data.clubes[atletas.clube_id].escudos['60x60'],
-                                                capitao: this.state.data.capitao_id,
-                                           }
-                                                , ...this.state.final
-                                           ]
-                    })    
-                ))
+// ordernar minha lista pela posicao dos jogadores==================================================
+    const orderData = response.data.atletas.sort((a,b) => {
+        return b.posicao_id - a.posicao_id
+    })
+    // no data fica o response original, atletasOrder ficam os atletas ordenados =======================
+    this.setState({data: response.data, atletasOrder : orderData, loading:false})
+        
+// alguns valores que serao mostrados no header ====================================================
+    this.setState({infoTime: {
+                                nomeTime:this.state.data.time.nome,
+                                nomeCartola:this.state.data.time.nome_cartola,
+                                escudo:this.state.data.time.url_escudo_png,
+                                patrimonio:this.state.data.patrimonio,
+                                valorTime: this.state.data.valor_time
+                                }
+                    });
+           
+// "varrer" os atletas ordenados para montar a lista na lista ==================================
+this.state.atletasOrder.map( atletas => (
+// vamos salvar essa informação no redux, assim nao precisamos dar um map toda vez que renderizarmos a tela 
+    this.setState({ final: [ {  esquemaId: this.state.data.time.esquema_id,
+                                atletaId: atletas.atleta_id,
+                                apelido:atletas.apelido, 
+                                posicaoId:atletas.posicao_id, 
+                                posicao: this.state.data.posicoes[atletas.posicao_id].nome,
+                                foto: atletas.foto,
+                                status: atletas.status_id,
+                                preco: atletas.preco_num,
+                                media: atletas.media_num,
+                                variacao: atletas.variacao_num,
+                                ultima: atletas.pontos_num,
+                                jogos: atletas.jogos_num,                                                
+                                clube: this.state.data.clubes[atletas.clube_id].nome,
+                                escudo: this.state.data.clubes[atletas.clube_id].escudos['60x60'],
+                                capitao: this.state.data.capitao_id,
+                            }
+                                , ...this.state.final
+                            ]
+    })    
+))
             
     }catch(err){
       return
