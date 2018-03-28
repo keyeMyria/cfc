@@ -20,11 +20,7 @@ import {modificaTime, trocaCapitao, salvaEscalacaoJson} from '../../../../redux/
 
 class MeuTime extends Component{
 
-   state = {
-        dadosEscalacao:null,
-    }
-
-async componentDidMount(){
+componentDidMount(){
 
 // atualizar state do redux que contem meu time montado ====================================
 this.props.modificaTime( // dados recebidos da pagina inicial como props
@@ -33,18 +29,12 @@ this.props.modificaTime( // dados recebidos da pagina inicial como props
                         this.props.MeuTime.esquemaId,
                         this.props.MeuTime.capitao,
                         );
-console.tron.log(this.props.salvarTime);
-
-//if(this.props.salvarTime == 'sim')
-//this._montarDados();
 }
 
 _montarDados = async () => {
 
     console.tron.log('entrei no montar dados')
-
-   // await AsyncStorage.setItem('@ESCartolaFC:salvarTime','nao')
-
+    
     var newAtletas = [...new Set(this.props.atletas)]; // retira duplicados do array
 
     let dadosInsert = {
@@ -55,17 +45,12 @@ _montarDados = async () => {
 
     let convertidos = JSON.stringify(dadosInsert);
 
-
-
     this.props.salvaEscalacaoJson(convertidos); // action que salva o json formatado
 }
 // ==========================================================================================
-    _enviarTime = async () => {
+_enviarTime = async () => {
         
-    //   await this._montarDados();
-
-//        const escalacao = this.state.dadosEscalacao;
-       const escalacao = this.props.escalacaoJson;
+        const escalacao = this.props.escalacaoJson;
        
        // colocar este trecho em uma action  passando os dados da escalacao por parametro ==== 
         const token = await AsyncStorage.getItem("@ESCartolaFC:token");
@@ -95,13 +80,13 @@ _montarDados = async () => {
        _imageStatus = () => {
             switch(this.props.MeuTime.status){
                 case 2:
-                return <Image style={{ width: 20, height: 20}} source={{uri:URI_STATUS_DUVIDA}} />
+                return <Image style={{ width: 20, height: 20}} source={require('../../../../assets/imgs/duvida.png')} />
                 case 3:
-                return <Image style={{ width: 20, height: 20}} source={{uri:URI_STATUS_SUSPENSO}} />
+                return <Image style={{ width: 20, height: 20}} source={require('../../../../assets/imgs/suspenso4.png')} />
                 case 5:
-                return <Image style={{ width: 20, height: 20}} source={{uri:URI_STATUS_CONTUNDIDO}} />
+                return <Image style={{ width: 20, height: 20}} source={require('../../../../assets/imgs/contundido.png')} />
                 case 7:
-                return <Image style={{ width: 20, height: 20}} source={{uri:URI_STATUS_PROVAVEL}} />
+                return <Image style={{ width: 20, height: 20}} source={require('../../../../assets/imgs/provavel.png')} />
             }   
        }
         
@@ -136,12 +121,12 @@ _montarDados = async () => {
                                   ||
                                  ( this.props.MeuTime.atletaId == this.props.capitao )
                                )    ? 
-                                  <Image style={{width: 20, height: 20}} source={{uri:URI_CAPITAO_SIM}} />
+                                  <Image style={{width: 20, height: 20}} source={require('../../../../assets/imgs/capitaFCSIM.png')} />
                                   :
-                                  <Image style={{width: 20, height: 20}} source={{uri:URI_CAPITAO_NAO}} />
+                                  <Image style={{width: 20, height: 20}} source={require('../../../../assets/imgs/capitaFCNAO.png')} />
                                } 
                             </TouchableOpacity>
-                               <Image style={{width: 20, height: 20}} source={{uri:URI_REMOVER}} />
+                               <Image style={{width: 20, height: 20}} source={require('../../../../assets/imgs/excluir.png')} />
                             </View>
                         </View>
                         <View style={Styles.infoB} >
